@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Bulan Mei 2023 pada 16.29
+-- Waktu pembuatan: 19 Bulan Mei 2023 pada 17.48
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -35,17 +35,6 @@ CREATE TABLE `card` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `role`
---
-
-CREATE TABLE `role` (
-  `UserID` varchar(20) NOT NULL,
-  `Role` varchar(10) NOT NULL CHECK (`Role` = 'staff' or `Role` = 'customer')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `room`
 --
 
@@ -68,6 +57,18 @@ CREATE TABLE `schedule_access` (
   `RoomID` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `user`
+--
+
+CREATE TABLE `user` (
+  `UserID` varchar(20) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Role` varchar(10) NOT NULL CHECK (`Role` = 'staff' or `Role` = 'customer')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --
@@ -78,12 +79,6 @@ CREATE TABLE `schedule_access` (
 ALTER TABLE `card`
   ADD PRIMARY KEY (`CardID`),
   ADD KEY `UserID` (`UserID`);
-
---
--- Indeks untuk tabel `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`UserID`);
 
 --
 -- Indeks untuk tabel `room`
@@ -99,6 +94,12 @@ ALTER TABLE `schedule_access`
   ADD KEY `RoomID` (`RoomID`);
 
 --
+-- Indeks untuk tabel `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`UserID`);
+
+--
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
@@ -106,13 +107,13 @@ ALTER TABLE `schedule_access`
 -- Ketidakleluasaan untuk tabel `card`
 --
 ALTER TABLE `card`
-  ADD CONSTRAINT `card_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `role` (`UserID`);
+  ADD CONSTRAINT `card_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
 
 --
 -- Ketidakleluasaan untuk tabel `schedule_access`
 --
 ALTER TABLE `schedule_access`
-  ADD CONSTRAINT `schedule_access_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `role` (`UserID`),
+  ADD CONSTRAINT `schedule_access_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
   ADD CONSTRAINT `schedule_access_ibfk_2` FOREIGN KEY (`RoomID`) REFERENCES `room` (`RoomID`);
 COMMIT;
 
